@@ -1,0 +1,33 @@
+---
+title: "p8105_hw3_wc2788"
+author: "Wen Cheng"
+date: "10/17/2021"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Problem 1
+
+
+
+```{r} 
+library(p8105.datasets)
+data("instacart")
+
+
+```
+
+## Problem 2
+
+```{r}
+
+```
+
+## Problem 3
+
+```{r}
+
+```
