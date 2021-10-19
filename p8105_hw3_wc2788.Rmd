@@ -7,6 +7,7 @@ output: github_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
 ```
 
 ## Problem 1
@@ -17,6 +18,17 @@ library(p8105.datasets)
 data("instacart")
 ```
 This dataset contains `r nrow(instacart)` rows and `r ncol(instacart)` columns, where each row in the dataset is a product from an order.
+
+How many aisles are there, and which aisles are the most items ordered from?
+```{r}
+instacart %>% 
+  count(aisle) %>% #count how many aisles
+  arrange(desc(n)) #find the most items ordered
+```
+There are 134 aisles, and fresh vegetables are most ordered. 
+
+
+
 
 ## Problem 2
 
