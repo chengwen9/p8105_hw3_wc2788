@@ -11,14 +11,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Problem 1
 
-
-
+load the data from  p8105.datasets
 ```{r} 
 library(p8105.datasets)
 data("instacart")
-
-
 ```
+This dataset contains `r nrow(instacart)` rows and `r ncol(instacart)` columns, where each row in the dataset is a product from an order.
 
 ## Problem 2
 
