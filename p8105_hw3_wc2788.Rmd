@@ -141,6 +141,8 @@ accel_data = read_csv("accel_data.csv") %>%
     names_to = "activity_minute",
     names_prefix = "activity_",
     values_to = "activity_count") #longthen the table
+ # mutate(day = fct_relevel(day, "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")) 
+
 accel_data
 ```
 There are `r nrow(accel_data)` rows and `r ncol(accel_data)` columns in this accelerometer dataset. Columns include week number, day_id, day, activity minutes and activity count, and variable weekday_vs_weekend that has been added to distinguish weekends from weekdays. These variables reveal the trends of daily activity counts for a 63 year-old male with BMI 25 in five weeks.
@@ -148,11 +150,36 @@ There are `r nrow(accel_data)` rows and `r ncol(accel_data)` columns in this acc
 aggregate accross minutes to create a total activity variable for each day, and create a table showing these totals.
 ```{r}
 daily_total_activity = accel_data %>%
-  group_by(week, day_id) %>% #for each day and show the week number
+  group_by(week, day, day_id) %>% #for each day and show the week number
   summarise(total_activity = sum(activity_count)) #sum each minute activity count
   knitr::kable(daily_total_activity) #make a table
-```
 
+#make a plot to see the trend
+  ggplot(daily_total_activity, aes(x = day_id, y = total_activity)) +
+  geom_line() + geom_point() #show trend by day_id
+  
+  ggplot(daily_total_activity, aes(x = day, y = total_activity)) +
+  geom_point() #show trend by Monday to Sunday
+```
+didn't see any obvious trend. He has lowest activity count(1440) on Saturday in week 4 and 5. On Tuesday and Wednesday, he has similar activity count in these 5 weeks. 
+
+Make a single-panel plot that shows the 24-hour activity time courses for each day and use color to indicate day of the week
 ```{r}
-
+accel_data %>%
+  mutate(activity_minute = as.numeric(activity_minute), #let minute be numeric
+         hour = activity_minute %/% 60, #convert minute by hour
+         hour = as.integer(hour)) %>% #let hour be integer
+  group_by(day_id, day, hour) %>%
+  summarize(
+    hour_activity = mean(activity_count)
+  ) %>%
+  ggplot(aes(x = hour, y = hour_activity, color = day)) +
+  geom_point() +
+  geom_line() +
+  labs(
+    title = "24-hour activity time courses by day",
+    x = "hour",
+    y = "activity count"
+  )
 ```
+
