@@ -128,6 +128,7 @@ brfss %>%
   facet_wrap(~ year) #create a two-panel plot
 ```
 ## Problem 3
+
 load,tidy and wrangle the data
 ```{r}
 library(readr)
@@ -144,11 +145,14 @@ accel_data
 ```
 There are `r nrow(accel_data)` rows and `r ncol(accel_data)` columns in this accelerometer dataset. Columns include week number, day_id, day, activity minutes and activity count, and variable weekday_vs_weekend that has been added to distinguish weekends from weekdays. These variables reveal the trends of daily activity counts for a 63 year-old male with BMI 25 in five weeks.
 
+aggregate accross minutes to create a total activity variable for each day, and create a table showing these totals.
+```{r}
+daily_total_activity = accel_data %>%
+  group_by(week, day_id) %>% #for each day and show the week number
+  summarise(total_activity = sum(activity_count)) #sum each minute activity count
+  knitr::kable(daily_total_activity) #make a table
+```
 
-
-
-wrangle the data
 ```{r}
 
-  
 ```
