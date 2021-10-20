@@ -17,7 +17,7 @@ load the data from  p8105.datasets
 library(p8105.datasets)
 data("instacart")
 ```
-This dataset contains `r nrow(instacart)` rows and `r ncol(instacart)` columns, where each row in the dataset is a product from an order.
+This dataset contains `r nrow(instacart)` rows and `r ncol(instacart)` columns, where each row in the dataset is a product from an order. There are order_id, product_id, user id, aisle id and product names. 
 
 How many aisles are there, and which aisles are the most items ordered from?
 ```{r}
@@ -67,10 +67,26 @@ instacart %>%
 ```
 
 ## Problem 2
+load the data 
+```{r}
+library(p8105.datasets)
+data("brfss_smart2010") 
+```
+clean the data
+```{r}
+brfss_smart2010 %>%
+  janitor::clean_names()  %>% #format the data
+  filter(topic == "Overall Health") %>% #focus on the “Overall Health” topic
+  filter(response == "Excellent" | response == "Very good" | response == "Good" | response == "Fair" | response == "Poor") %>% #include only responses from “Excellent” to “Poor”
+  mutate(response = fct_relevel(response, "Poor", "Fair", "Good", "Very good", "Excellent")) #taking levels ordered
+```
+
 
 ```{r}
 
 ```
+
+
 
 ## Problem 3
 
