@@ -76,8 +76,8 @@ The dataset contains `r nrow(brfss_smart2010)` rows and  `r ncol(brfss_smart2010
 
 clean the data
 ```{r}
-brfss =
-brfss_smart2010 %>%
+brfss = 
+  brfss_smart2010 %>%
   janitor::clean_names()  %>% #format the data
   filter(topic == "Overall Health") %>% #focus on the “Overall Health” topic
   filter(response == "Excellent" | response == "Very good" | response == "Good" | response == "Fair" | response == "Poor") %>% #include only responses from “Excellent” to “Poor”
@@ -124,12 +124,31 @@ brfss %>%
   filter(year == 2006 | year == 2010) %>% #for year 2006 and 2010
   filter(locationabbr == "NY") %>% #in NY state
   ggplot(aes(x = data_value, fill = response)) +
-  geom_density(alpha = 0.5) + 
-  facet_wrap(~ year)
-  
+  geom_density(alpha = 0.5) + #make a density plot
+  facet_wrap(~ year) #create a two-panel plot
 ```
 ## Problem 3
+load,tidy and wrangle the data
+```{r}
+library(readr)
+accel_data = read_csv("accel_data.csv") %>%
+  janitor::clean_names() %>%
+  mutate(weekday_vs_weekend = ifelse(day %in% c("Saturday", "Sunday"),"weekend", "weekday")) %>% # add weekday vs weekend variable
+  relocate(weekday_vs_weekend) %>% #move this variable to front
+  pivot_longer(
+    activity_1:activity_1440,
+    names_to = "activity_minute",
+    names_prefix = "activity_",
+    values_to = "activity_count") #longthen the table
+accel_data
+```
+There are `r nrow(accel_data)` rows and `r ncol(accel_data)` columns in this accelerometer dataset. Columns include week number, day_id, day, activity minutes and activity count, and variable weekday_vs_weekend that has been added to distinguish weekends from weekdays. These variables reveal the trends of daily activity counts for a 63 year-old male with BMI 25 in five weeks.
 
+
+
+
+wrangle the data
 ```{r}
 
+  
 ```
