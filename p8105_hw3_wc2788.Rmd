@@ -175,11 +175,14 @@ accel_data %>%
   ) %>%
   ggplot(aes(x = hour, y = hour_activity, color = day)) +
   geom_point() +
-  geom_line() +
+  geom_line(alpha = 0.8) +
   labs(
     title = "24-hour activity time courses by day",
     x = "hour",
     y = "activity count"
-  )
+  ) +
+  scale_x_continuous(
+    breaks = c(0:24) # a day have 24 hours
+  ) 
 ```
-
+he is less active at 12am-4am.
