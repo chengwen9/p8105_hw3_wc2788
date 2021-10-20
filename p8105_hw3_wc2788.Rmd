@@ -72,6 +72,8 @@ load the data
 library(p8105.datasets)
 data("brfss_smart2010") 
 ```
+The dataset contains `r nrow(brfss_smart2010)` rows and  `r ncol(brfss_smart2010)` columns. There contain information on location, topic, question, response. 
+
 clean the data
 ```{r}
 brfss_smart2010 %>%
@@ -81,9 +83,25 @@ brfss_smart2010 %>%
   mutate(response = fct_relevel(response, "Poor", "Fair", "Good", "Very good", "Excellent")) #taking levels ordered
 ```
 
-
+In 2002, which states were observed at 7 or more locations? What about in 2010?
 ```{r}
+brfss_smart2010 %>%
+  filter(Year == "2002") %>% #in year 2002
+  group_by(Year, Locationabbr) %>%
+  distinct(Locationdesc) %>% 
+  summarize(total_testing_location = n()) %>% #count location
+  filter(total_testing_location >= 7) %>% #at 7 or more
+  arrange(total_testing_location) %>%
+  knitr::kable() #make a table
 
+brfss_smart2010 %>%
+  filter(Year == "2010") %>% #in year 2010
+  group_by(Year, Locationabbr) %>%
+  distinct(Locationdesc) %>%
+  summarize(total_testing_location = n()) %>% #count location
+  filter(total_testing_location >= 7) %>% #at 7 or more
+  arrange(total_testing_location) %>%
+  knitr::kable() #make a table
 ```
 
 
