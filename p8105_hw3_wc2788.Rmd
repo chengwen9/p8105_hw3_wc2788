@@ -41,6 +41,7 @@ instacart %>%
        x = "aisle",
        y = "number of items ordered") #clear named
 ```
+only fresh vegetables and fresh fruits ordered more than 120000 items. 
 
 Make a table showing the three most popular items in each of the aisles “baking ingredients”, “dog food care”, and “packaged vegetables fruits”. Include the number of times each item is ordered in your table.
 ```{r}
@@ -53,6 +54,7 @@ instacart %>%
   arrange(aisle, rank) %>%
   knitr::kable() #make a table
 ```
+organic baby spinach is the most ordered packaged vegetables, it ordered 9784 times.
 
 Make a table showing the mean hour of the day at which Pink Lady Apples and Coffee Ice Cream are ordered on each day of the week; format this table for human readers (i.e. produce a 2 x 7 table)
 ```{r}
@@ -65,7 +67,7 @@ instacart %>%
   knitr::kable()
 #not sure how to change 0-6 to monday to sunday
 ```
-
+people mostly order pink lady apples and coffee ice cream from 11am to 3pm.
 ## Problem 2
 load the data 
 ```{r}
@@ -127,6 +129,7 @@ brfss %>%
   geom_density(alpha = 0.5) + #make a density plot
   facet_wrap(~ year) #create a two-panel plot
 ```
+
 ## Problem 3
 
 load,tidy and wrangle the data
@@ -177,7 +180,7 @@ accel_data %>%
   geom_point() +
   geom_line(alpha = 0.8) +
   labs(
-    title = "24-hour activity time courses by day",
+    title = "24-hour activity time courses by day for 5 weeks",
     x = "hour",
     y = "activity count"
   ) +
@@ -186,3 +189,5 @@ accel_data %>%
   ) 
 ```
 he is less active at 12am-4am.
+
+
