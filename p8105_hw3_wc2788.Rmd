@@ -59,15 +59,23 @@ organic baby spinach is the most ordered packaged vegetables, it ordered 9784 ti
 Make a table showing the mean hour of the day at which Pink Lady Apples and Coffee Ice Cream are ordered on each day of the week; format this table for human readers (i.e. produce a 2 x 7 table)
 ```{r}
 instacart %>%
-  filter(product_name %in% c("Pink Lady Apples","Coffee Ice Cream")) %>% #select two prodcuts
+  filter(product_name %in% c("Pink Lady Apples","Coffee Ice Cream")) %>% #select two products
   group_by(product_name, order_dow) %>%
   summarize(mean_hour = mean(order_hour_of_day)) %>% #find the mean of order hour
   pivot_wider(names_from = order_dow,
               values_from = mean_hour) %>% #widen data
+  rename("Sunday" = "0",
+         "Monday" = "1",
+         "Tuesday" = "2",
+         "Wednesday" = "3",
+         "Thursday" = "4",
+         "Friday" = "5",
+         "Saturday" = "6") %>%
   knitr::kable()
-#not sure how to change 0-6 to monday to sunday
 ```
 people mostly order pink lady apples and coffee ice cream from 11am to 3pm.
+
+
 ## Problem 2
 load the data 
 ```{r}
@@ -84,6 +92,7 @@ brfss =
   filter(topic == "Overall Health") %>% #focus on the “Overall Health” topic
   filter(response == "Excellent" | response == "Very good" | response == "Good" | response == "Fair" | response == "Poor") %>% #include only responses from “Excellent” to “Poor”
   mutate(response = fct_relevel(response, "Poor", "Fair", "Good", "Very good", "Excellent")) #taking levels ordered
+brfss
 ```
 
 In 2002, which states were observed at 7 or more locations? What about in 2010?
@@ -173,9 +182,7 @@ accel_data %>%
          hour = activity_minute %/% 60, #convert minute by hour
          hour = as.integer(hour)) %>% #let hour be integer
   group_by(day_id, day, hour) %>%
-  summarize(
-    hour_activity = mean(activity_count)
-  ) %>%
+  summarize(hour_activity = mean(activity_count)) %>%
   ggplot(aes(x = hour, y = hour_activity, color = day)) +
   geom_point() +
   geom_line(alpha = 0.8) +
@@ -190,4 +197,33 @@ accel_data %>%
 ```
 he is less active at 12am-4am.
 
+make more plots
+```{r}
+accel_data %>%
+  mutate(activity_minute = as.numeric(activity_minute), #let minute be numeric
+         hour = activity_minute %/% 60, #convert minute by hour
+         hour = as.integer(hour)) %>% #let hour be integer
+  group_by(day, hour) %>%
+  summarize(hour_activity = mean(activity_count)) %>%
+  ggplot(aes(x = hour, y = hour_activity, color = day)) +
+  geom_smooth(se = FALSE) + #smoother graph, easy to read
+  labs(
+    x = "hour",
+    y = "activity count"
+  ) +
+  scale_x_continuous(
+    breaks = c(0:24) # a day have 24 hours
+  ) 
+```
 
+```{r}
+accel_data %>%
+  group_by(day) %>%
+  ggplot(aes(x = activity_minute, y = activity_count, color = day)) +
+  geom_point() +
+  geom_line(alpha = 0.5) +
+  labs(
+    x = "activity minute",
+    y = "activity count"
+  ) 
+```
